@@ -9,14 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
-import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 
 import com.example.blackjack.view.ErrorDetails;
 
@@ -47,14 +48,9 @@ public final class CustomErrorController implements ErrorController {
       return new ErrorDetails(statusCode, error, message);
    }
 
-   @Override
-   public String getErrorPath() {
-      return PATH;
-   }
-
    private Map<String, Object> getErrorAttributes(HttpServletRequest request) {
-      RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-      return errorAttributes.getErrorAttributes(requestAttributes, false);
+      WebRequest webRequest = new ServletWebRequest(request);
+      return errorAttributes.getErrorAttributes(webRequest, ErrorAttributeOptions.defaults());
    }
 
    @ManagedAttribute(description = "Number of errors handled by CustomErrorController.")

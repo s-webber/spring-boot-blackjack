@@ -1,26 +1,28 @@
 package com.example.blackjack.view;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CardTest {
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testRankNull() {
-      new Card(null, Suit.SPADES);
+      assertThrows(NullPointerException.class, () -> new Card(null, Suit.SPADES));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testSuitNull() {
-      new Card(Rank.ACE, null);
+      assertThrows(NullPointerException.class, () -> new Card(Rank.ACE, null));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNulls() {
-      new Card(null, null);
+      assertThrows(NullPointerException.class, () -> new Card(null, null));
    }
 
+   @Test
    public void testGetters() {
       assertGetters(Rank.KING, Suit.CLUBS);
       assertGetters(Rank.NINE, Suit.HEARTS);

@@ -1,0 +1,5 @@
+spring:
+    mvc:
+      pathmatch:
+            # https://stackoverflow.com/questions/40241843/failed-to-start-bean-documentationpluginsbootstrapper-in-spring-data-rest
+            matching-strategy: ant_path_matcher

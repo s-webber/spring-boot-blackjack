@@ -11,9 +11,9 @@ import static com.example.blackjack.view.Rank.TWO;
 import static com.example.blackjack.view.Suit.SPADES;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.example.blackjack.CardReader;
 import com.example.blackjack.view.Card;
@@ -206,6 +206,6 @@ public class HandValuerTest {
    }
 
    private void assertValue(int expectedHandValue, Collection<Card> cards) {
-      assertEquals(cards.toString(), expectedHandValue, HandValuer.value(cards));
+      assertEquals(expectedHandValue, HandValuer.value(cards), () -> cards.toString());
    }
 }

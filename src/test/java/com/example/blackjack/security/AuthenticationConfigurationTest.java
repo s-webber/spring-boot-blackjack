@@ -1,15 +1,15 @@
 package com.example.blackjack.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +20,7 @@ public class AuthenticationConfigurationTest {
    private AuthenticationConfiguration testObject;
    private AccountRepository mockAccountRepository;
 
-   @Before
+   @BeforeEach
    public void setUp() {
       mockAccountRepository = mock(AccountRepository.class);
       testObject = new AuthenticationConfiguration();

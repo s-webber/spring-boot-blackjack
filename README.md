@@ -14,7 +14,7 @@ The source code comments contain `TODO`s that refer to how the system could be i
 
 ## Getting Started
 
-To build this project you will first require [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) to be installed.
+To build this project you will first require Java 8 or higher.
 
 The project can be built and started by using the command:
 
@@ -25,7 +25,7 @@ gradlew bootRun
 Once the application is running you can use the Swagger documentation to interact with it by visiting: 
 
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui/index.html
 ```
 
 **Note:** When prompted for a username and password any value for username will be acceptable and the correct password value will be `password`
@@ -35,13 +35,13 @@ http://localhost:8080/swagger-ui.html
 The API documentation, generated during a `gradlew build` using Spring REST Docs, will be located at:
 
 ```
-build/asciidoc/html5/blackjack-api.html
+build/docs/blackjack-api.html
 ```
 
 The test coverage report, generated during a `gradlew build` using JaCoCo, will be located at: 
 
 ```
-build/reports/jacoco/test/html/index.html
+build/jacoco/test/html/index.html
 ```
 
 Here are some links that I found useful during the development of this project:

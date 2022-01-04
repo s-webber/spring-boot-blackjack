@@ -2,17 +2,17 @@ package com.example.blackjack.model;
 
 import static com.example.blackjack.CardReader.toCards;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MemoryGameStoreTest {
    private static final String DUMMY_USER_NAME = "dummy user name";
@@ -22,7 +22,7 @@ public class MemoryGameStoreTest {
    private GameIdGenerator mockIdGenerator;
    private DeckFactory mockDeckFactory;
 
-   @Before
+   @BeforeEach
    public void setUp() {
       mockIdGenerator = mock(GameIdGenerator.class);
       mockDeckFactory = mock(DeckFactory.class);

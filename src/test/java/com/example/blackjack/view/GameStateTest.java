@@ -1,9 +1,9 @@
 package com.example.blackjack.view;
 
 import static com.example.blackjack.CardReader.toCards;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GameStateTest {
    @Test

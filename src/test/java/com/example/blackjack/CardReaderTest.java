@@ -17,12 +17,13 @@ import static com.example.blackjack.view.Suit.CLUBS;
 import static com.example.blackjack.view.Suit.DIAMONDS;
 import static com.example.blackjack.view.Suit.HEARTS;
 import static com.example.blackjack.view.Suit.SPADES;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.example.blackjack.view.Card;
 import com.example.blackjack.view.Rank;
@@ -59,37 +60,41 @@ public class CardReaderTest {
       assertFalse(itr.hasNext());
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidEmpty() {
-      CardReader.toCards("");
+      assertInvalid("");
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidRank() {
       // '1' is an invalid rank
-      CardReader.toCards("1S");
+      assertInvalid("1S");
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidSuit() {
       // 'P' is an invalid suit
-      CardReader.toCards("7P");
+      assertInvalid("7P");
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidLength() {
       // each representation of a card has to be two characters (the first indicating the rank and the second indicating the suit)
-      CardReader.toCards("2");
-      CardReader.toCards("S");
-      CardReader.toCards("22S");
-      CardReader.toCards("AHH");
+      assertInvalid("2");
+      assertInvalid("S");
+      assertInvalid("22S");
+      assertInvalid("AHH");
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidCardInSequence() {
-      CardReader.toCards("7G 8D 9D"); // 1st card invalid
-      CardReader.toCards("7D 8G 9D"); // 2nd card invalid
-      CardReader.toCards("7D 8D 9G"); // 3rd card invalid
+      assertInvalid("7G 8D 9D"); // 1st card invalid
+      assertInvalid("7D 8G 9D"); // 2nd card invalid
+      assertInvalid("7D 8D 9G"); // 3rd card invalid
+   }
+
+   private void assertInvalid(String input) {
+      assertThrows(IllegalArgumentException.class, () -> CardReader.toCards(input));
    }
 
    private void assertCard(String string, Rank rank, Suit suit) {

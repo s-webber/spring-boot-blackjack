@@ -1,9 +1,9 @@
 package com.example.blackjack.controller;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -30,21 +29,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -60,7 +60,7 @@ import com.example.blackjack.view.Rank;
 import com.example.blackjack.view.Status;
 import com.example.blackjack.view.Suit;
 
-@RunWith(SpringRunner.class)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @SpringBootTest
 public class BlackjackControllerTest {
    private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -71,12 +71,9 @@ public class BlackjackControllerTest {
    private static final String DUMMY_USER_NAME = "username";
    private static final String BASIC_DIGEST_HEADER_VALUE = createBasicDigestHeaderValue(DUMMY_USER_NAME, "password");
    private static final String DUMMY_RESPONSE = "{\"id\":\"1fb8aae0-0305-4088-9866-769a7a1a37a8\",\"status\":\"PLAYERS_TURN\","
-         + "\"dealer\":{\"cards\":[{\"rank\":\"ACE\",\"suit\":\"SPADES\"}],\"value\":11},"
-         + "\"player\":{\"cards\":[{\"rank\":\"EIGHT\",\"suit\":\"DIAMONDS\"},{\"rank\":\"QUEEN\",\"suit\":\"HEARTS\"}],\"value\":18}}";
+                                                + "\"dealer\":{\"cards\":[{\"rank\":\"ACE\",\"suit\":\"SPADES\"}],\"value\":11},"
+                                                + "\"player\":{\"cards\":[{\"rank\":\"EIGHT\",\"suit\":\"DIAMONDS\"},{\"rank\":\"QUEEN\",\"suit\":\"HEARTS\"}],\"value\":18}}";
 
-   /** Required by spring-restdocs */
-   @Rule
-   public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
    private RestDocumentationResultHandler document;
    /** This is required so tests use spring security */
    @Autowired
@@ -87,11 +84,12 @@ public class BlackjackControllerTest {
    private GameStore gameStore;
    private MockMvc mockMvc;
 
-   @Before
-   public void setup() throws Exception {
+   @BeforeEach
+   public void setUp(RestDocumentationContextProvider restDocumentation) {
+      System.out.println("RestDocumentationExtension " + restDocumentation);
       document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
-      mockMvc = webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).apply(documentationConfiguration(restDocumentation))
-            .alwaysDo(document).build();
+      mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).apply(documentationConfiguration(restDocumentation))
+                  .alwaysDo(document).build();
    }
 
    /** Test that requests to list games must include valid authentication details. */
@@ -152,7 +150,7 @@ public class BlackjackControllerTest {
       when(mockGame.snapshotCurrentState()).thenReturn(createDummyGameState());
 
       MvcResult result = mockMvc.perform(post(BLACKJACK_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isCreated())
-            .andExpect(header().string("Location", DUMMY_GAME_ID_LOCATION)).andReturn();
+                  .andExpect(header().string("Location", DUMMY_GAME_ID_LOCATION)).andReturn();
       assertResponse(result);
       verifySnapshotCurrentStateCalled(mockGame);
    }
@@ -164,8 +162,7 @@ public class BlackjackControllerTest {
       when(gameStore.findByUsernameAndGameId(DUMMY_USER_NAME, DUMMY_GAME_ID)).thenReturn(mockGame);
       when(mockGame.snapshotCurrentState()).thenReturn(createDummyGameState());
 
-      MvcResult result = mockMvc.perform(get(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isOk())
-            .andReturn();
+      MvcResult result = mockMvc.perform(get(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isOk()).andReturn();
       assertResponse(result);
       verifySnapshotCurrentStateCalled(mockGame);
    }
@@ -173,9 +170,8 @@ public class BlackjackControllerTest {
    /** Test that a 400 Bad Request response is returned for update requests that do not specify an action. */
    @Test
    public void updateGame_NoActionParameter() throws Exception {
-      MvcResult result = mockMvc.perform(post(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isBadRequest())
-            .andReturn();
-      assertBadRequestException(MissingServletRequestParameterException.class, "Required Action parameter 'action' is not present", result);
+      MvcResult result = mockMvc.perform(post(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isBadRequest()).andReturn();
+      assertBadRequestException(MissingServletRequestParameterException.class, "Required request parameter 'action' for method parameter type Action is not present", result);
    }
 
    /** Test that a 400 Bad Request response is returned for update requests that contain an unknown action value. */
@@ -183,13 +179,16 @@ public class BlackjackControllerTest {
    public void updateGame_InvalidActionParameter() throws Exception {
       MvcResult result = requestUpdateWithAction("DOUBLE").andExpect(status().isBadRequest()).andReturn();
       String expectedExceptionMessage = "Failed to convert value of type 'java.lang.String' to required type 'com.example.blackjack.view.Action'; "
-            + "nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type "
-            + "[@org.springframework.web.bind.annotation.RequestParam @io.swagger.annotations.ApiParam com.example.blackjack.view.Action] for value 'DOUBLE'; "
-            + "nested exception is java.lang.IllegalArgumentException: No enum constant com.example.blackjack.view.Action.DOUBLE";
+                                        + "nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type "
+                                        + "[@org.springframework.web.bind.annotation.RequestParam @io.swagger.annotations.ApiParam com.example.blackjack.view.Action] for value 'DOUBLE'; "
+                                        + "nested exception is java.lang.IllegalArgumentException: No enum constant com.example.blackjack.view.Action.DOUBLE";
       assertBadRequestException(MethodArgumentTypeMismatchException.class, expectedExceptionMessage, result);
    }
 
-   /** Test that a 405 Method Not Allowed response is returned for "hit" update requests for games that are already complete. */
+   /**
+    * Test that a 405 Method Not Allowed response is returned for "hit" update requests for games that are already
+    * complete.
+    */
    @Test
    public void updateGame_Hit_InvalidState() throws Exception {
       GameAlreadyCompleteException gameAlreadyCompleteException = new GameAlreadyCompleteException(DUMMY_GAME_ID);
@@ -202,7 +201,10 @@ public class BlackjackControllerTest {
       verifyHitCalled(mockGame);
    }
 
-   /** Test that a 405 Method Not Allowed response is returned for "stand" update requests for games that are already complete. */
+   /**
+    * Test that a 405 Method Not Allowed response is returned for "stand" update requests for games that are already
+    * complete.
+    */
    @Test
    public void updateGame_Stand_InvalidState() throws Exception {
       GameAlreadyCompleteException gameAlreadyCompleteException = new GameAlreadyCompleteException(DUMMY_GAME_ID);
@@ -281,8 +283,7 @@ public class BlackjackControllerTest {
    private void assertGameNotFound(Supplier<MockHttpServletRequestBuilder> supplier) throws Exception {
       GameNotFoundException gameNotFoundException = new GameNotFoundException(DUMMY_USER_NAME, DUMMY_GAME_ID);
       when(gameStore.findByUsernameAndGameId(DUMMY_USER_NAME, DUMMY_GAME_ID)).thenThrow(gameNotFoundException);
-      MvcResult result = mockMvc.perform(get(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isNotFound())
-            .andReturn();
+      MvcResult result = mockMvc.perform(get(DUMMY_GAME_ID_PATH).header(AUTHORIZATION_HEADER, BASIC_DIGEST_HEADER_VALUE)).andExpect(status().isNotFound()).andReturn();
       assertException(gameNotFoundException, result);
    }
 

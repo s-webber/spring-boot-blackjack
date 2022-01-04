@@ -1,8 +1,7 @@
 package com.example.blackjack.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,17 +11,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 
 import com.example.blackjack.view.ErrorDetails;
 
 public class CustomErrorControllerTest {
-   @Test
-   public void testGetPath() {
-      assertEquals("/error", new CustomErrorController().getErrorPath());
-   }
-
    @Test
    public void testErrorDetails() {
       int expectedStatus = 42;
@@ -34,7 +28,7 @@ public class CustomErrorControllerTest {
       errorMap.put("error", expectedError);
       errorMap.put("message", expectedMessage);
       ErrorAttributes mockErrorAttributes = mock(ErrorAttributes.class);
-      when(mockErrorAttributes.getErrorAttributes(any(), eq(false))).thenReturn(errorMap);
+      when(mockErrorAttributes.getErrorAttributes(any(), any())).thenReturn(errorMap);
 
       CustomErrorController testObject = new CustomErrorController();
       testObject.setErrorAttributes(mockErrorAttributes);
