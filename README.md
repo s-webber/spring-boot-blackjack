@@ -1,5 +1,5 @@
 # Spring Boot Blackjack
-[![Build Status](https://travis-ci.org/s-webber/spring-boot-blackjack.png?branch=master)](https://travis-ci.org/s-webber/spring-boot-blackjack)
+![Build Status](https://github.com/s-webber/spring-boot-blackjack/actions/workflows/github-actions.yml/badge.svg)
 
 ## About
 
