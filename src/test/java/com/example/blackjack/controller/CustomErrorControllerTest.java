@@ -8,13 +8,13 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 
 import com.example.blackjack.view.ErrorDetails;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class CustomErrorControllerTest {
    @Test

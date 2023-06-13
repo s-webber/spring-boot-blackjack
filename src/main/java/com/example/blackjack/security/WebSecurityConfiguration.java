@@ -1,11 +1,14 @@
 package com.example.blackjack.security;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Configures authentication controls.
@@ -24,10 +27,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @EnableWebSecurity
 @Configuration
-class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-   @Override
-   protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests().anyRequest().fullyAuthenticated().and().httpBasic().and().csrf().disable();
+class WebSecurityConfiguration {
+   @Bean
+   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+      http.authorizeHttpRequests(authz -> authz.anyRequest().fullyAuthenticated());
+      http.httpBasic(withDefaults());
+      http.csrf(CsrfConfigurer::disable);
+      return http.build();
    }
 
    @Bean
