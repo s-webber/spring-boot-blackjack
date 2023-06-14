@@ -16,7 +16,7 @@ public class ShuffleStrategyTest {
    public void test() {
       ShuffleStrategy<Integer> s = new ShuffleStrategy<Integer>();
 
-      List<Integer> input = unmodifiableList(IntStream.range(0, 100).mapToObj(Integer::new).collect(toList()));
+      List<Integer> input = unmodifiableList(IntStream.range(0, 100).mapToObj(Integer::valueOf).collect(toList()));
       List<Integer> output1 = s.shuffle(input);
       List<Integer> output2 = s.shuffle(input);
 
