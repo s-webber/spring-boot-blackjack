@@ -178,7 +178,7 @@ public class BlackjackControllerTest {
    @Test
    public void updateGame_InvalidActionParameter() throws Exception {
       MvcResult result = requestUpdateWithAction("DOUBLE").andExpect(status().isBadRequest()).andReturn();
-      String expectedExceptionMessage = "Failed to convert value of type 'java.lang.String' to required type 'com.example.blackjack.view.Action'; Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam @io.swagger.annotations.ApiParam com.example.blackjack.view.Action] for value [DOUBLE]";
+      String expectedExceptionMessage = "Failed to convert value of type 'java.lang.String' to required type 'com.example.blackjack.view.Action'; Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam @io.swagger.v3.oas.annotations.Parameter com.example.blackjack.view.Action] for value [DOUBLE]";
       assertBadRequestException(MethodArgumentTypeMismatchException.class, expectedExceptionMessage, result);
    }
 

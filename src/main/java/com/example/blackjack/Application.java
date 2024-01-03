@@ -1,16 +1,14 @@
 package com.example.blackjack;
 
-import static springfox.documentation.builders.PathSelectors.regex;
-
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 
 /** The class containing the {@code main} method used to launch this Spring Boot application. */
 @EnableWebSecurity
@@ -21,11 +19,13 @@ public class Application {
    }
 
    @Bean
-   public Docket blackjackApi() {
-      return new Docket(DocumentationType.SWAGGER_2).groupName("blackjack").apiInfo(apiInfo()).select().paths(regex("/blackjack.*?.*")).build();
+   public GroupedOpenApi publicApi() {
+      return GroupedOpenApi.builder().group("Spring Boot Blackjack").pathsToMatch("/blackjack", "/blackjack/*").build();
    }
 
-   private ApiInfo apiInfo() {
-      return new ApiInfoBuilder().title("Spring Boot Blackjack").description("An implementation of the blackjack card game.").build();
+   @Bean
+   public OpenAPI springShopOpenAPI() {
+      return new OpenAPI().info(new Info().title("Spring Boot Blackjack").description("An implementation of the blackjack card game.").version("v0.0.1"))
+                  .externalDocs(new ExternalDocumentation().description("GitHub repository").url("https://github.com/s-webber/spring-boot-blackjack"));
    }
 }

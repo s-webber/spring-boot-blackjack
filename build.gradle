@@ -1,6 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
     id 'jacoco'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
@@ -16,18 +16,6 @@ ext {
 
 configurations {
     asciidoctorExt
-}
-
-// https://stackoverflow.com/questions/75732794/spring-boot-3-and-swagger-ui-java-lang-nosuchmethoderror-io-swagger-v3-oas-ann
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'io.swagger.core.v3') {
-                details.useVersion("2.2.8")
-                details.because('Swagger UI and Kafka Avro incompatible dependency')
-            }
-        }
-    }
 }
 
 asciidoctor {
@@ -57,8 +45,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.integration:spring-integration-jmx'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.19'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

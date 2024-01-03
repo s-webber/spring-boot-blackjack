@@ -47,7 +47,7 @@ build/jacoco/test/html/index.html
 Here are some links that I found useful during the development of this project:
 
 * Building an Application with Spring Boot: https://spring.io/guides/gs/spring-boot/
-* Usage of Swagger 2.0 in Spring Boot Applications to document APIs: http://heidloff.net/article/usage-of-swagger-2-0-in-spring-boot-applications-to-document-apis/
+* OpenAPI 3 Library for Spring Boot: https://springdoc.org/
 * Example of replacing Spring Boot "whitelabel" error page with custom error responses: https://gist.github.com/jonikarppinen/662c38fb57a23de61c8b
 * Securing REST APIs With Spring Boot: http://ryanjbaxter.com/2015/01/06/securing-rest-apis-with-spring-boot/
 * Spring REST Docs: https://spring.io/projects/spring-restdocs

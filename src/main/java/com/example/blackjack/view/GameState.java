@@ -1,7 +1,9 @@
 package com.example.blackjack.view;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 import static java.util.Objects.requireNonNull;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * An immutable snapshot of a specific stage of a blackjack game.
@@ -9,26 +11,25 @@ import io.swagger.annotations.ApiModelProperty;
  * @see com.example.blackjack.model.Game#snapshotCurrentState()
  */
 public final class GameState {
-   @ApiModelProperty(value = "The identifier for this game.", required = true)
+   @Schema(description = "The identifier for this game.", requiredMode = REQUIRED)
    private final String id;
-   @ApiModelProperty(value = "The current state of this game.", required = true)
+
+   @Schema(description = "The current state of this game.", requiredMode = REQUIRED)
    private final Status status;
-   @ApiModelProperty(value = "The cards currently held by the dealer.", required = true)
+
+   @Schema(description = "The cards currently held by the dealer.", requiredMode = REQUIRED)
    private final Hand dealer;
-   @ApiModelProperty(value = "The cards currently held by the player.", required = true)
+
+   @Schema(description = "The cards currently held by the player.", requiredMode = REQUIRED)
    private final Hand player;
 
    /**
-    * @param id
-    *           the identifier for the game
-    * @param status
-    *           the current state of the game
-    * @param dealer
-    *           the cards currently held by the dealer
-    * @param player
-    *           the cards currently held by the player
-    * @throws NullPointerException
-    *            if any of {@code id}, {@code status}, {@code dealer} or {@code player} is {@code null}
+    * @param id the identifier for the game
+    * @param status the current state of the game
+    * @param dealer the cards currently held by the dealer
+    * @param player the cards currently held by the player
+    * @throws NullPointerException if any of {@code id}, {@code status}, {@code dealer} or {@code player} is
+    * {@code null}
     */
    public GameState(String id, Status status, Hand dealer, Hand player) {
       this.id = requireNonNull(id);
